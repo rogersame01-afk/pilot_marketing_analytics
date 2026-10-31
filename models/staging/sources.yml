@@ -1,0 +1,52 @@
+version: 2
+
+sources:
+  - name: raw
+    database: PILOT_SMB_BI
+    schema: PILOT_SMB_BI_SCHEMA
+    tables:
+      - name: accounts
+        columns:
+          - name: account_id
+            tests: [not_null, unique]
+
+      - name: opportunities
+        columns:
+          - name: opportunity_id
+            tests: [not_null, unique]
+          - name: account_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw', 'accounts')
+                  field: account_id
+
+      - name: touches
+        columns:
+          - name: touch_id
+            tests: [not_null, unique]
+          - name: account_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw', 'accounts')
+                  field: account_id
+
+      - name: subscriptions
+        columns:
+          - name: subscription_id
+            tests: [not_null, unique]
+          - name: opportunity_id
+            tests:
+              - relationships:
+                  to: source('raw', 'opportunities')
+                  field: opportunity_id
+
+      - name: customer_monthly
+        
+      - name: channel_spend
+        
+      - name: experiment_assignments
+       
+      - name: experiment_outcomes
+       
